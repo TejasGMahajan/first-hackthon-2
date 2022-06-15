@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+ </script>
+</head>
+
+<body> 
+    <script src="script.js"></script>
+    <div class="pagination">
+        <li class="page-item previous-page disable"><a class="page-link" href="#">Prev</a></li>
+        <li class="page-item current-page active"><a class="page-link" href="#">1</a></li>
+        <li class="page-item dots"><a class="page-link" href="#">...</a></li>
+        <li class="page-item current-page"><a class="page-link" href="#">5</a></li>
+        <li class="page-item current-page"><a class="page-link" href="#">6</a></li>
+        <li class="page-item dots"><a class="page-link" href="#">...</a></li>
+        <li class="page-item current-page"><a class="page-link" href="#">10</a></li>
+        <li class="page-item next-page"><a class="page-link" href="#">Next</a></li>
+    </div>
+    <script> $(function() {
+        var numberOfItems = $(".card-content .card").length;
+        var limitPerPage = 5;
+        var totalPages = Math.cell(numberOfItems / limitPerPage);
+        var paginationSize = 7;
+        var currentPage;
+        function showPage(whichPage){
+            if(whichPage < 1 || witchPage > totalPages) return false;
+    
+            currentPage = whichPage;
+    
+            $(".card-content .card").hide().slice((currentPage - 1)* limitPerPage, currentPage * limitPerPage).show();
+            $(".pagination li").slice(1, -1).remove();
+    
+            getPageList(totalPages, currentPage, paginationSize).forEach(item =>{
+                $("<li>").addClass("page-item").addClass(item ? "current-page" : "dots")
+                .toggleClass("active", item === currentPage).append($('<a>').addClass("page-link")
+                .attr({href:"javascript:void(0)"}).text(item || "...")).insertBefore(".next-page");
+            });
+    
+            $(".previous-page").toggleClass("disable", currentPage === 1);
+            $(".next-page").toggleClass("disable", currentPage === 1);
+            return true
+        }
+            $(".pagination").append(
+                $("<li").addClass("page-item").addCalss("previous-page").append($("<a>").addClass("page-link").attr({href: "javascript:void(0)"}).text(Prev)),
+                $("<li").addClass("page-item").addCalss("next-page").append($("<a>").addClass("page-link").attr({href: "javascript:void(0)"}).text(Next)),
+            );
+            $(".card-content").show();
+            showPage(1);
+            $(document).on("click", ".pagination li.current-page:not(.active)", function() {
+                return showPage(+$(this).text());
+            });
+            
+            $(".next-page").on("click", function() {
+                return showPage(currentPage + 1);
+            });
+            $(".previous-page").on("click", function() {
+                return showPage(currentPage - 1);
+            })
+     }); 
+     </script>
+</body>
+
+</html>
